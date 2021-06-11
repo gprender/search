@@ -11,9 +11,10 @@ class Adversary:
             referee: a function that determines if the current state is final,
                 (i.e., the player/adversary have won) or if the state is neutral.
                 We use the following return values to indicate this check:
-                    0 => adversary has won
-                    1 => board is neutral (non-final state)
-                    2 => player has won
+                    0 => board is neutral (non-final state)
+                    1 => game is a tie (final state)
+                    2 => player has won (final)
+                    3 => adversary has won (final)
         """
         self.succ_func = succ_func
         self.referee = referee
@@ -28,12 +29,16 @@ class Adversary:
         queue = [ game_state ]
         current_state = game_state
 
+        # The search logic here is wrong; need to be alternating between
+        # adversary moves and possible optimal player moves 
+        '''
         while queue and self.referee(current_state) != 0:
             current_state = queue.pop(0)
             for next_state in self.succ_func(current_state):
                 if next_state not in visited:
                     visited[next_state] = current_state
                     queue.append(next_state)
+        '''
 
         path = [ current_state ]
         while visited[path[-1]]:  # backtrack along the path
